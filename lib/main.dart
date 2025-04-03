@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_tut/data/contants.dart';
 import 'package:youtube_tut/data/notifiers.dart';
-import 'package:youtube_tut/views/widget_tree.dart';
+import 'package:youtube_tut/views/pages/welcompage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +16,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    initDarkMood();
+    super.initState();
+  }
+
+ void initDarkMood() async{
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    isDark.value = pref.getBool(KDarkMode.darkKey) ?? false;
+ }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -28,11 +42,13 @@ class _MyAppState extends State<MyApp> {
                 brightness: value ? Brightness.light : Brightness.dark,
               ),
             ),
-            home: WidgetTree(),
+            home: WelcomePage(),
           );
         },
         );
       },
     );
   }
+  
+ 
 }
